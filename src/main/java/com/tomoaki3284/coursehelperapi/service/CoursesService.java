@@ -21,7 +21,7 @@ public class CoursesService {
 	
 	public CoursesService() {
 		coursesCache = Caffeine.newBuilder()
-			.expireAfterWrite(3, TimeUnit.DAYS)
+			.expireAfterWrite(1, TimeUnit.DAYS)
 			.build(uri -> getCoursesFromS3(uri));
 	}
 	
