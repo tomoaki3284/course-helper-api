@@ -10,24 +10,30 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CoursesService {
+	
+	@Value("${aws.s3.endpoint.courses}")
+	private final String S3_URL;
+	
 	// this cache's key is redundant since uri is fixed
 	// key = uri, val = List of posts that can be fetch from the uri
 	// if cache doesn't exist, simply fetch
 	private final LoadingCache<String, List<Course>> coursesCache;
 	
-	public CoursesService() {
+	public CoursesService(@Value("${aws.s3.endpoint.courses}") final String s3URL) {
 		coursesCache = Caffeine.newBuilder()
 			.expireAfterWrite(1, TimeUnit.DAYS)
 			.build(uri -> getCoursesFromS3(uri));
+		
+		this.S3_URL = s3URL;
 	}
 	
 	public List<Course> getCourses() {
-		final String s3URL = "https://coursehelper.s3.amazonaws.com/current-semester.json";
-		return coursesCache.get(s3URL);
+		return coursesCache.get(S3_URL);
 	}
 	
 	public List<Course> getCoursesFromS3(final String uri) {
