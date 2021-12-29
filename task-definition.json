@@ -1,5 +1,5 @@
 {
-
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:854735632985:task-definition/react-course-helper-task:2",
   "containerDefinitions": [
     {
       "name": "react-course-helper-container",
