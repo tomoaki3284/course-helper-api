@@ -53,3 +53,27 @@ jobs:
           echo "Pushing image to ECR..."
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      # The task definition file can be updated prior to deployment with the new container image ID
+      # using the aws-actions/amazon-ecs-render-task-definition action.
+      # It builds a new container image tagged with the commit ID, inserts the new image ID as the
+      # image for the my-container container in the task definition file, and then deploys the
+      # rendered task definition file to ECS:
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: my-container
+          image: ${{ steps.build-image.outputs.image }}
+
+      # Run the task define in task-definition.json using smitp/amazon-ecs-run-task@v1
+      - # Details: https://github.com/smitp/amazon-ecs-run-task
+      - name: Run Task on Amazon ECS
+          uses: smitp/amazon-ecs-run-task@v1
+          with:
+            task-definition: task-definition.json
+            cluster: react-course-helper
+            count: 1
+            started-by: github-actions-${{ github.actor }}
+            wait-for-finish: true
