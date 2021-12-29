@@ -70,10 +70,10 @@ jobs:
       # Run the task define in task-definition.json using smitp/amazon-ecs-run-task@v1
       - # Details: https://github.com/smitp/amazon-ecs-run-task
       - name: Run Task on Amazon ECS
-          uses: smitp/amazon-ecs-run-task@v1
-          with:
-            task-definition: task-definition.json
-            cluster: react-course-helper
-            count: 1
-            started-by: github-actions-${{ github.actor }}
-            wait-for-finish: true
+        uses: smitp/amazon-ecs-run-task@v1
+        with:
+          task-definition: task-definition.json
+          cluster: react-course-helper
+          count: 1
+          started-by: github-actions-${{ github.actor }}
+          wait-for-finish: true
