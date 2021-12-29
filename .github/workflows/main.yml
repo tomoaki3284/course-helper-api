@@ -68,7 +68,7 @@ jobs:
           image: ${{ steps.build-image.outputs.image }}
 
       # Run the task define in task-definition.json using smitp/amazon-ecs-run-task@v1
-      - # Details: https://github.com/smitp/amazon-ecs-run-task
+      # Details: https://github.com/smitp/amazon-ecs-run-task
       - name: Run Task on Amazon ECS
         uses: smitp/amazon-ecs-run-task@v1
         with:
