@@ -7,6 +7,6 @@ RUN mvn -f /home/app/pom.xml clean package
 # Package stage
 FROM openjdk:11-jre-slim
 COPY --from=build /home/app/target/course-helper-api-0.0.1-SNAPSHOT.jar /usr/local/lib/course-helper-api-0.0.1-SNAPSHOT.jar
-EXPOSE 8080
+EXPOSE 443
 ENTRYPOINT ["java","-jar","/usr/local/lib/course-helper-api-0.0.1-SNAPSHOT.jar"]
 
