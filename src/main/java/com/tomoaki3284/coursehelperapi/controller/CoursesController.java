@@ -45,16 +45,9 @@ public class CoursesController {
 	 */
 	@CrossOrigin
 	@GetMapping("/courses/group-by-title")
-	public Map<String,Object> getCourseGroupByTitle(
-		@RequestParam(name = "offering-term", defaultValue = "false") boolean needOfferingTerm
-	) {
+	public Map<String,Object> getCourseGroupByTitle() {
 		List<Course> courses = coursesService.getCourses();
 		Map<String, List<Course>> map = courses.stream().collect(Collectors.groupingBy(Course::getTitle));
-		
-		if (!needOfferingTerm) {
-			return new TreeMap<>(map);
-		}
-		
 		String offeringTerm = coursesService.getOfferingTerm();
 		Map<String, Object> jsonResponse = new HashMap<>();
 		jsonResponse.put(JSON_KEY_COURSES, new TreeMap<>(map));
